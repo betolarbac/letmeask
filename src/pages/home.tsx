@@ -1,23 +1,52 @@
+import { useNavigate } from "react-router-dom";
+
+
+import { auth, firebase } from '../services/firebase'
+
 import illustrationImg from '../assets/images/illustration.svg'
-import logoImg from '../assets/images/logo.svg'
-import googleIconImg from '../assets/images/google-icon.svg'
+import logoImg from '../assets/images/logo.svg';
+import googleIconImg from '../assets/images/google-icon.svg';
+
+import { Button } from '../components/button'
+
+import '../styles/auth.scss';
+
 
 export function Home() {
+    //função de rotas com react route dom 
+    const navigate = useNavigate();
+
+    
+
+    //autenticação com google popup
+    function handleCreateRoom(){
+        const provider = new firebase.auth.GoogleAuthProvider();
+
+        auth.signInWithPopup(provider).then((result) => {
+            
+            
+            navigate('/rooms/new')
+        })
+
+        
+    }
+
     return (
-        <div>
+        <div id="page-auth">
             <aside>
                 <img src={illustrationImg} alt="ilustração perguntas e resposta" />
                 <strong>Toda pergunta tem uma resposta.</strong>
                 <p>Aprenda e compartilhe conhecimento com outras pessoas</p>
             </aside>
-            <main>
-                <div>
+            <main >
+                <div className="main-content">
                     <img src={logoImg} alt="Letmeask" />
-                    <button>
+                    
+                    <button onClick={handleCreateRoom} className="create-room">
                         <img src={googleIconImg} alt="google logo" />
                         crie sua sala com Google 
                     </button>
-                    <div>
+                    <div className="separator">
                         ou entre em uma sala
                     </div>
                     <form>
@@ -25,9 +54,9 @@ export function Home() {
                         type="text" 
                         placeholder="Digite o codigo de uma sala "
                         />
-                        <button type="submit">
+                        <Button type="submit" >
                             Entrar na sala
-                        </button>
+                        </Button>
                     </form>
                 </div>
             </main>
